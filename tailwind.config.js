@@ -7,7 +7,7 @@ module.exports = {
     },
     extend: {
       backgroundImage: {
-  home: "url('../assets-imagem/mesas-sede.png')"
+  home: "url('../assets-imagem/mesas_sede.png')"
 }
 
     },
