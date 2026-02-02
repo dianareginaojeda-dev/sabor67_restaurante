@@ -4,3 +4,31 @@
 body {
     background-color: #e9f7e9;
 }
+
+.header-bg {
+  background-image: url("../assets-imagem/mesas_sede.png");
+}
+.header-bg {
+  background-image: url("../assets-imagem/mesas_sede.png");
+  background-size: cover;
+  background-position: center;
+}
+.zoom-container {
+  width: 112px;
+  height: 112px;
+  overflow: hidden;
+  border-radius: 6px;
+  position: relative;
+  cursor: zoom-in;
+}
+
+.zoom-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.zoom-container:hover .zoom-img {
+  transform: scale(2);
+}
