@@ -24,10 +24,8 @@ const extrasList = [
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
 
-  
 // ===== ABRIR MODAL =====
 function openCustomization(item) {
-  
   currentItem = {
     ...item,
     extras: [],
@@ -126,5 +124,8 @@ checkoutBtn.onclick = () => {
   cart = [];
   updateCartModal();
   cartModal.classList.add("hidden");
+};
+
+
 };
 
