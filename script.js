@@ -24,8 +24,17 @@ const extrasList = [
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
 
+
+// fechar menu carrinho quando clicar fora 
+Modal.addEventListener("click", function(event){
+    if(event.target === cartModal){
+        cartModal.style.display = "none"
+    }
+
+  
 // ===== ABRIR MODAL =====
 function openCustomization(item) {
+  cartModal.style.display = "none"
   currentItem = {
     ...item,
     extras: [],
