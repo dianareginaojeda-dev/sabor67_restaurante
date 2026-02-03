@@ -1,3 +1,4 @@
+let currentItem = null;
 // ===== ELEMENTOS =====
 const cartBtn = document.getElementById("cart-btn");
 const cartModal = document.getElementById("cart-modal");
@@ -127,5 +128,6 @@ checkoutBtn.onclick = () => {
 };
 
 
+window.openCustomization = openCustomization;
 
 
