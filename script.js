@@ -34,7 +34,7 @@ cartModal.addEventListener("click", function(event){
   
 // ===== ABRIR MODAL =====
 function openCustomization(item) {
-  cartModal.style.display = "none"
+  
   currentItem = {
     ...item,
     extras: [],
