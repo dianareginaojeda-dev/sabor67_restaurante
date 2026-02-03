@@ -26,7 +26,7 @@ const removeList = ["Cebola", "Tomate", "Feijão"];
 
 
 // fechar menu carrinho quando clicar fora 
-Modal.addEventListener("click", function(event){
+cart-modal.addEventListener("click", function(event){
     if(event.target === cartModal){
         cartModal.style.display = "none"
     }
