@@ -126,7 +126,6 @@ checkoutBtn.onclick = () => {
   cartModal.classList.add("hidden");
 };
 
-window.openCustomization = openCustomization;
 
 
 
