@@ -6,6 +6,9 @@ const cartItemsContainer = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 const cartCount = document.getElementById("cart-count");
 const checkoutBtn = document.getElementById("checkout-btn");
+const addresswharn = document.getElementById("address-warn")
+const addresswharnSetor = document.getElementById("address-warn-setorbloco")
+const addresswharnhorario = document.getElementById("address-warn-horario")
 
 // ===== CARRINHO =====
 let cart = [];
