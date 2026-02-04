@@ -176,6 +176,15 @@
       <span>Total:</span>
       <span>R$ <span id="cart-total">0.00</span></span>
     </div>
+    
+    <!-- ADICIONAR NOME DO SOLICITANTE-->
+   <input 
+          type="text" 
+          placeholder="Digite seu nome completo" 
+          id="address" 
+          class="w-full border-2 p-1 rounded my-1" 
+          /> 
+          <p class="text-red-500 hidden" id="address-warn">Digite seu nome</p> 
 
     <button id="checkout-btn"
       class="bg-green-600 w-full py-2 rounded text-white mt-4">
@@ -183,7 +192,9 @@
     </button>
   </div>
 </div>
+<!-- FIM NOME DO SOLICITANTE-->
 
+  
 <!-- MODAL PERSONALIZAÇÃO -->
 <div id="custom-modal" class="fixed inset-0 bg-black/60 hidden items-center justify-center z-50">
   <div class="bg-white p-6 rounded-xl w-[95%] max-w-lg shadow-lg">
