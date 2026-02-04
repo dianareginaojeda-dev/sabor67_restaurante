@@ -178,6 +178,7 @@
     </div>
     
     <!-- ADICIONAR NOME DO SOLICITANTE-->
+    <p class="font-bold mt-4"> Informar seu nome </p>
    <input 
           type="text" 
           placeholder="Digite seu nome completo" 
@@ -185,14 +186,31 @@
           class="w-full border-2 p-1 rounded my-1" 
           /> 
           <p class="text-red-500 hidden" id="address-warn">Digite seu nome</p> 
-
+ <!-- ADICIONAR NOME DO SOLICITANTE-->
+    <!-- setor bloco--> 
+           <p class="font-bold mt-4"> Informar seu Setor/Bloco </p> 
+          <input 
+          type="text" 
+          placeholder="Digite seu Setor..." 
+          id="addressSetor" 
+          class="w-full border-2 p-1 rounded my-1"
+          /> 
+          <p class="text-red-500 hidden" id="address-warn-setor">Digite seu Setor/Bloco</p>
+    
+    <!-- Horario de Retirada--> 
+           <p class="font-bold mt-4"> Informar horario da retirada do pedido </p> 
+          <input 
+          type="text" 
+          placeholder="Digite seu Horario..." 
+          id="addresshorario" 
+          class="w-full border-2 p-1 rounded my-1" 
+          />  <!-- Horario de Retirada--> 
     <button id="checkout-btn"
       class="bg-green-600 w-full py-2 rounded text-white mt-4">
       Finalizar Pedido
     </button>
   </div>
 </div>
-<!-- FIM NOME DO SOLICITANTE-->
 
   
 <!-- MODAL PERSONALIZAÇÃO -->
