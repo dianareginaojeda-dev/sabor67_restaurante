@@ -117,6 +117,10 @@ function updateCartModal() {
         <p class="text-sm">Obs: ${item.obs || "-"}</p>
         <p class="font-semibold">R$ ${item.price.toFixed(2)}</p>
       </div>`;
+   // ADICIONAR BOTAO REMOVER ITEM DO PEDIDO
+     <button class="remove-from-cart-btn" data-name="${item.name}">
+    Remover
+    </button>
   });
 
   cartTotal.innerText = total.toFixed(2);
