@@ -13,6 +13,15 @@ const addresswharnhorario = document.getElementById("address-warn-horario")
 // ===== CARRINHO =====
 let cart = [];
 
+cartItemsContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("remove-from-cart-btn")) {
+    const index = e.target.dataset.index;
+
+    cart.splice(index, 1);
+    updateCartModal();
+  }
+});
+
 // ===== MODAL PERSONALIZAÇÃO =====
 const modal = document.getElementById("custom-modal");
 const extrasBox = document.getElementById("extras-box");
@@ -116,11 +125,15 @@ function updateCartModal() {
         <p class="text-sm">Retirar: ${item.removidos.join(", ") || "Nada"}</p>
         <p class="text-sm">Obs: ${item.obs || "-"}</p>
         <p class="font-semibold">R$ ${item.price.toFixed(2)}</p>
+
+         <button 
+        class="remove-from-cart-btn text-red-600 text-sm mt-1"
+        data-index="${index}">
+        Remover
+      </button>
+    </div>
       </div>`;
-   // ADICIONAR BOTAO REMOVER ITEM DO PEDIDO
-     <button class="remove-from-cart-btn" data-name="${item.name}">
-    Remover
-    </button>
+  
   });
 
   cartTotal.innerText = total.toFixed(2);
