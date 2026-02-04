@@ -6,9 +6,7 @@ const cartItemsContainer = document.getElementById("cart-items");
 const cartTotal = document.getElementById("cart-total");
 const cartCount = document.getElementById("cart-count");
 const checkoutBtn = document.getElementById("checkout-btn");
-const addresswharn = document.getElementById("address-warn")
-const addresswharnSetor = document.getElementById("address-warn-setorbloco")
-const addresswharnhorario = document.getElementById("address-warn-horario")
+
 
 // ===== CARRINHO =====
 let cart = [];
@@ -146,6 +144,60 @@ checkoutBtn.onclick = () => {
   updateCartModal();
   cartModal.classList.add("hidden");
 };
+
+//PREENCHER OBRIGATORIO 
+const btnCheckout = document.getElementById("checkout-btn");
+
+const nomeInput = document.getElementById("address");
+const setorInput = document.getElementById("addressSetor");
+const horarioInput = document.getElementById("addresshorario");
+
+const nomeWarn = document.getElementById("address-warn");
+const setorWarn = document.getElementById("address-warn-setor");
+const horarioWarn = document.getElementById("address-warn-horario");
+
+btnCheckout.addEventListener("click", function () {
+
+  let valido = true;
+
+  // NOME
+  if (nomeInput.value.trim() === "") {
+    nomeWarn.classList.remove("hidden");
+    nomeInput.classList.add("border-red-500");
+    valido = false;
+  } else {
+    nomeWarn.classList.add("hidden");
+    nomeInput.classList.remove("border-red-500");
+  }
+
+  // SETOR
+  if (setorInput.value.trim() === "") {
+    setorWarn.classList.remove("hidden");
+    setorInput.classList.add("border-red-500");
+    valido = false;
+  } else {
+    setorWarn.classList.add("hidden");
+    setorInput.classList.remove("border-red-500");
+  }
+
+  // HORÁRIO
+  if (horarioInput.value.trim() === "") {
+    horarioWarn.classList.remove("hidden");
+    horarioInput.classList.add("border-red-500");
+    valido = false;
+  } else {
+    horarioWarn.classList.add("hidden");
+    horarioInput.classList.remove("border-red-500");
+  }
+
+  if (!valido) {
+    return; // BLOQUEIA O ENVIO
+  }
+
+  // ✅ SE CHEGAR AQUI, TUDO OK
+  alert("Formulário validado com sucesso!");
+});
+
 
 
 window.openCustomization = openCustomization;
