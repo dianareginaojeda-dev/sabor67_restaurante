@@ -138,12 +138,7 @@ function updateCartModal() {
   cartCount.innerText = cart.length;
 }
 
-// ===== FINALIZAR PEDIDO =====
-checkoutBtn.onclick = () => {
-  cart = [];
-  updateCartModal();
-  cartModal.classList.add("hidden");
-};
+
 
 //PREENCHER OBRIGATORIO 
 const btnCheckout = document.getElementById("checkout-btn");
@@ -160,63 +155,49 @@ btnCheckout.addEventListener("click", function () {
 
   let valido = true;
 
-  // NOME
   if (nomeInput.value.trim() === "") {
     nomeWarn.classList.remove("hidden");
-    nomeInput.classList.add("border-red-500");
     valido = false;
-  } else {
-    nomeWarn.classList.add("hidden");
-    nomeInput.classList.remove("border-red-500");
   }
 
-  // SETOR
   if (setorInput.value.trim() === "") {
     setorWarn.classList.remove("hidden");
-    setorInput.classList.add("border-red-500");
     valido = false;
-  } else {
-    setorWarn.classList.add("hidden");
-    setorInput.classList.remove("border-red-500");
   }
 
-  // HORÁRIO
   if (horarioInput.value.trim() === "") {
     horarioWarn.classList.remove("hidden");
-    horarioInput.classList.add("border-red-500");
     valido = false;
-  } else {
-    horarioWarn.classList.add("hidden");
-    horarioInput.classList.remove("border-red-500");
   }
 
-  // ⛔ SE NÃO FOR VÁLIDO, PARA AQUI
   if (!valido) return;
 
-  // 🔢 NÚMERO DO PEDIDO
+  if (cart.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
   const numeroPedido = gerarNumeroPedido();
 
-  // 🧾 MENSAGEM WHATSAPP
-  let mensagem = `🧾 *Pedido Nº ${numeroPedido}*%0A%0A`;
-  mensagem += `👤 *Nome:* ${nomeInput.value}%0A`;
-  mensagem += `🏢 *Setor/Bloco:* ${setorInput.value}%0A`;
-  mensagem += `⏰ *Horário de Retirada:* ${horarioInput.value}%0A%0A`;
-
-  mensagem += `🍱 *Itens do Pedido:*%0A`;
+  let mensagem = `🧾 *Pedido Nº ${numeroPedido}*\n\n`;
+  mensagem += `👤 *Nome:* ${nomeInput.value}\n`;
+  mensagem += `🏢 *Setor/Bloco:* ${setorInput.value}\n`;
+  mensagem += `⏰ *Horário de Retirada:* ${horarioInput.value}\n\n`;
+  mensagem += `🍱 *Itens do Pedido:*\n`;
 
   cart.forEach(item => {
-    mensagem += `- ${item.name} 🍗 - R$ ${item.price.toFixed(2)}%0A`;
+    mensagem += `- ${item.name} 🍗 R$ ${item.price.toFixed(2)}\n`;
   });
 
-  mensagem += `%0A💰 *Total:* R$ ${cartTotal.textContent}`;
+  mensagem += `\n💰 *Total:* R$ ${cartTotal.textContent}`;
 
-  // 📲 WHATSAPP
   const telefone = "5567992777140";
-  const url = `https://wa.me/${telefone}?text=${mensagem}`;
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
-  window.open(url, "_blank");
+  // ✅ FUNCIONA EM TODOS OS NAVEGADORES
+  window.location.href = url;
 
-  // 🧹 LIMPAR APÓS ENVIAR
+  // limpar depois do envio
   cart = [];
   updateCartModal();
   cartModal.classList.add("hidden");
