@@ -211,6 +211,36 @@ cartModal.addEventListener("click", (e) => {
   }
 });
 
+function esconderAviso(inputId, warnId) {
+  const input = document.getElementById(inputId);
+  const warn = document.getElementById(warnId);
+
+  input.addEventListener("input", () => {
+    if (input.value.trim() !== "") {
+      warn.classList.add("hidden");
+      input.classList.remove("border-red-500");
+    }
+  });
+}
+
+function esconderAviso(inputId, warnId) {
+  const input = document.getElementById(inputId);
+  const warn = document.getElementById(warnId);
+
+  input.addEventListener("input", () => {
+    if (input.value.trim() !== "") {
+      warn.classList.add("hidden");
+      input.classList.remove("border-red-500");
+    }
+  });
+}
+
+// aplicar para cada campo
+esconderAviso("address", "address-warn");
+esconderAviso("addressSetor", "address-warn-setor");
+esconderAviso("addresshorario", "address-warn-horario");
+
+
 
 window.openCustomization = openCustomization;
 
