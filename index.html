@@ -43,7 +43,7 @@
             </span>
 
             <div class="bg-green-600 px-4 py-1 rounded-lg mt-4" id="date-span">
-            <span class="text-white font-medium">
+            <span class="text-white font-medium" id="date-text">
             Seg á Sex - 11:00 as 14:00
             </span>
         </div>
@@ -199,9 +199,11 @@
     <!-- Horario de Retirada--> 
            <p class="font-bold mt-4"> Informar horario da retirada do pedido </p> 
           <input 
-          type="text" 
+          type="time" 
           placeholder="Digite seu Horario..." 
           id="addresshorario" 
+            min="11:00"
+            max="13:30"
           class="w-full border-2 p-1 rounded my-1" 
           />
           <p class="text-red-500 hidden" id="address-warn-horario">Digite Horario da Retirada</p> 
