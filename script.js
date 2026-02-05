@@ -206,6 +206,8 @@ btnCheckout.addEventListener("click", function () {
 
   mensagem += `\n💰 *Total:* R$ ${cartTotal.textContent}`;
 
+🍽️ `Restaurante Sabor 67`;
+  
   const telefone = "5567992777140";
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
