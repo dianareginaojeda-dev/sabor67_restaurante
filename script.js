@@ -190,10 +190,9 @@ btnCheckout.addEventListener("click", function () {
     horarioInput.classList.remove("border-red-500");
   }
 
-  if (!valido) {
-    return; // BLOQUEIA O ENVIO
-  }
+
    const numeroPedido = gerarNumeroPedido();
+  
    // ===== MONTAR MENSAGEM =====
   let mensagem = `🛒 *Novo Pedido*%0A%0A`;
   mensagem += `👤 *Nome:* ${nome.value}%0A`;
