@@ -153,6 +153,13 @@ const horarioWarn = document.getElementById("address-warn-horario");
 
 btnCheckout.addEventListener("click", function () {
 
+   if (!estaDentroDoHorario()) {
+    alert("⛔ Fora do horário de atendimento!");
+    return;
+  }
+
+  if (!validarHorarioRetirada()) return;
+
   let valido = true;
 
   if (nomeInput.value.trim() === "") {
@@ -176,6 +183,7 @@ btnCheckout.addEventListener("click", function () {
     alert("Seu carrinho está vazio!");
     return;
   }
+
 
   const numeroPedido = gerarNumeroPedido();
 
@@ -238,17 +246,7 @@ cartModal.addEventListener("click", (e) => {
   }
 });
 
-function esconderAviso(inputId, warnId) {
-  const input = document.getElementById(inputId);
-  const warn = document.getElementById(warnId);
 
-  input.addEventListener("input", () => {
-    if (input.value.trim() !== "") {
-      warn.classList.add("hidden");
-      input.classList.remove("border-red-500");
-    }
-  });
-}
 
 function esconderAviso(inputId, warnId) {
   const input = document.getElementById(inputId);
@@ -303,8 +301,7 @@ function verificarHorarioFuncionamento() {
   }
 }
 
-// executa ao carregar a página
-verificarHorarioFuncionamento();
+
 
 function estaDentroDoHorario() {
   const agora = new Date();
@@ -344,22 +341,11 @@ function validarHorarioRetirada() {
 /* ===== EVENTOS ===== */
 document.getElementById("addresshorario").addEventListener("input", validarHorarioRetirada);
 
-document.getElementById("checkout-btn").addEventListener("click", function () {
-  if (!estaDentroDoHorario()) {
-    alert("⛔ Fora do horário de atendimento!");
-    return;
-  }
 
-  if (!validarHorarioRetirada()) {
-    return;
-  }
-
-  // 👉 aqui entra seu código de envio para WhatsApp
-  enviarPedidoWhatsApp();
-});
 
 /* ===== EXECUTA AO ABRIR A PÁGINA ===== */
 verificarHorarioFuncionamento();
+
 
 function verificarHorarioFuncionamento() {
   const dateSpan = document.getElementById("date-span");
