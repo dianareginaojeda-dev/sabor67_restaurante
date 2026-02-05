@@ -221,9 +221,20 @@ btnCheckout.addEventListener("click", function () {
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
   // ✅ FUNCIONA EM TODOS OS NAVEGADORES
- window.open(url, "_blank");
+window.open(url, "_blank");
 
+  // ✅ ALERTA DE CONFIRMAÇÃO
+alert("✅ Pedido enviado com sucesso!");
 
+// ===== LIMPAR FORMULÁRIO =====
+nomeInput.value = "";
+setorInput.value = "";
+horarioInput.value = "";
+
+nomeWarn.classList.add("hidden");
+setorWarn.classList.add("hidden");
+horarioWarn.classList.add("hidden");
+  
   // limpar depois do envio
   cart = [];
   updateCartModal();
