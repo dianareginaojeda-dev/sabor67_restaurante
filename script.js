@@ -193,6 +193,28 @@ btnCheckout.addEventListener("click", function () {
   if (!valido) {
     return; // BLOQUEIA O ENVIO
   }
+   const numeroPedido = gerarNumeroPedido();
+   // ===== MONTAR MENSAGEM =====
+  let mensagem = `🛒 *Novo Pedido*%0A%0A`;
+  mensagem += `👤 *Nome:* ${nome.value}%0A`;
+  mensagem += `🏢 *Setor/Bloco:* ${setor.value}%0A`;
+  mensagem += `⏰ *Horário de Retirada:* ${horario.value}%0A%0A`;
+
+  mensagem += `🍱 *Itens do Pedido:*%0A`;
+
+  cart.forEach(item => {
+    mensagem += `- ${item.name} - R$ ${item.price.toFixed(2)}%0A`;
+  });
+
+  mensagem += `%0A💰 *Total:* R$ ${cartTotal.textContent}`;
+
+  // ===== NUMERO DO WHATSAPP =====
+  const telefone = "5567992777140"; // coloque seu número aqui (DDD + número)
+
+  const url = `https://wa.me/${telefone}?text=${mensagem}`;
+
+  window.open(url, "_blank");
+});
 
   // ✅ SE CHEGAR AQUI, TUDO OK
   alert("Formulário validado com sucesso!");
@@ -239,6 +261,11 @@ function esconderAviso(inputId, warnId) {
 esconderAviso("address", "address-warn");
 esconderAviso("addressSetor", "address-warn-setor");
 esconderAviso("addresshorario", "address-warn-horario");
+
+//numero do pedido
+function gerarNumeroPedido() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
 
 
 
