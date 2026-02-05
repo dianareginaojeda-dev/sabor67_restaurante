@@ -215,9 +215,7 @@ btnCheckout.addEventListener("click", function () {
   window.open(url, "_blank");
 });
 
-  // ✅ SE CHEGAR AQUI, TUDO OK
-  alert("Formulário validado com sucesso!");
-});
+
 
 cartBtn.addEventListener("click", () => {
   cartModal.classList.remove("hidden");
