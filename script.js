@@ -310,8 +310,7 @@ function verificarHorarioFuncionamento() {
     // VERMELHO
     dateSpan.classList.remove("bg-green-600");
     dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Fora do horário de atendimento.
-  🕒 Seg à Sex — 11:00 às 13:30 (exceto feriados).";
+    dateText.textContent = "⛔ Estamos fora do horário de atendimento!";
   }
 }
 
@@ -389,8 +388,7 @@ function verificarHorarioFuncionamento() {
     // VERMELHO
     dateSpan.classList.remove("bg-green-600");
     dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Fora do horário de atendimento.
-  🕒 Seg à Sex — 11:00 às 13:30 (exceto feriados).";
+    dateText.textContent = "⛔ Estamos fora do horário de atendimento!";
   }
 }
 
