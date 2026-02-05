@@ -198,6 +198,18 @@ btnCheckout.addEventListener("click", function () {
   alert("Formulário validado com sucesso!");
 });
 
+cartBtn.addEventListener("click", () => {
+  cartModal.classList.remove("hidden");
+  cartModal.classList.add("flex");
+});
+
+// PARA FECHAR CLICANDO FORA
+cartModal.addEventListener("click", (e) => {
+  if (e.target === cartModal) {
+    cartModal.classList.add("hidden");
+    cartModal.classList.remove("flex");
+  }
+});
 
 
 window.openCustomization = openCustomization;
