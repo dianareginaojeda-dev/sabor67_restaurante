@@ -306,6 +306,83 @@ function verificarHorarioFuncionamento() {
 // executa ao carregar a página
 verificarHorarioFuncionamento();
 
+function estaDentroDoHorario() {
+  const agora = new Date();
+  const dia = agora.getDay(); // 0 dom | 6 sáb
+
+  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
+  const inicio = 11 * 60;       // 11:00
+  const fim = 13 * 60 + 30;     // 13:30
+
+  return dia >= 1 && dia <= 5 && minutosAtual >= inicio && minutosAtual <= fim;
+}
+
+/* ===== BLOCO VERDE / VERMELHO ===== */
+function verificarHorarioFuncionamento() {
+  const span = document.getElementById("date-span");
+  const texto = document.getElementById("date-text");
+  const aviso = document.getElementById("closed-warn");
+  const btn = document.getElementById("checkout-btn");
+
+  if (estaDentroDoHorario()) {
+    span.classList.remove("bg-red-600");
+    span.classList.add("bg-green-600");
+    texto.textContent = "Seg á Sex - 11:00 as 13:30";
+    aviso?.classList.add("hidden");
+    btn.disabled = false;
+    btn.classList.remove("opacity-50", "cursor-not-allowed");
+  } else {
+    span.classList.remove("bg-green-600");
+    span.classList.add("bg-red-600");
+    texto.textContent = "⛔ Fora do horário de pedidos";
+    aviso?.classList.remove("hidden");
+    btn.disabled = true;
+    btn.classList.add("opacity-50", "cursor-not-allowed");
+  }
+}
+
+/* ===== VALIDAR HORÁRIO DE RETIRADA ===== */
+function validarHorarioRetirada() {
+  const input = document.getElementById("addresshorario");
+  const warn = document.getElementById("address-warn-horario");
+
+  if (!input.value) return false;
+
+  const [h, m] = input.value.split(":").map(Number);
+  const minutos = h * 60 + m;
+
+  const inicio = 11 * 60;
+  const fim = 13 * 60 + 30;
+
+  if (minutos < inicio || minutos > fim) {
+    warn.textContent = "Horário inválido (11:00 às 13:30)";
+    warn.classList.remove("hidden");
+    return false;
+  }
+
+  warn.classList.add("hidden");
+  return true;
+}
+
+/* ===== EVENTOS ===== */
+document.getElementById("addresshorario").addEventListener("input", validarHorarioRetirada);
+
+document.getElementById("checkout-btn").addEventListener("click", function () {
+  if (!estaDentroDoHorario()) {
+    alert("⛔ Fora do horário de atendimento!");
+    return;
+  }
+
+  if (!validarHorarioRetirada()) {
+    return;
+  }
+
+  // 👉 aqui entra seu código de envio para WhatsApp
+  enviarPedidoWhatsApp();
+});
+
+/* ===== EXECUTA AO ABRIR A PÁGINA ===== */
+verificarHorarioFuncionamento();
 
 
 window.openCustomization = openCustomization;
