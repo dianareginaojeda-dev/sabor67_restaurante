@@ -154,8 +154,7 @@ const horarioWarn = document.getElementById("address-warn-horario");
 btnCheckout.addEventListener("click", function () {
 
    if (!estaDentroDoHorario()) {
-    alert("⛔ Fora do horário de atendimento.
-  🕒 Seg à Sex — 11:00 às 13:30 (exceto feriados).");
+    alert("⛔ Fora do horário de atendimento!");
     return;
   }
 
