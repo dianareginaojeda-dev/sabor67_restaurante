@@ -186,8 +186,23 @@ btnCheckout.addEventListener("click", function () {
   mensagem += `🍱 *Itens do Pedido:*\n`;
 
   cart.forEach(item => {
-    mensagem += `- ${item.name} 🍗 R$ ${item.price.toFixed(2)}\n`;
-  });
+  mensagem += `🍱 *${item.name}* - R$ ${item.price.toFixed(2)}\n`;
+
+  if (item.extras.length > 0) {
+    mensagem += `   ➕ Adicionais: ${item.extras.join(", ")}\n`;
+  }
+
+  if (item.removidos.length > 0) {
+    mensagem += `   ➖ Retirar: ${item.removidos.join(", ")}\n`;
+  }
+
+  if (item.obs && item.obs.trim() !== "") {
+    mensagem += `   📝 Obs: ${item.obs}\n`;
+  }
+
+  mensagem += `\n`;
+});
+
 
   mensagem += `\n💰 *Total:* R$ ${cartTotal.textContent}`;
 
