@@ -188,6 +188,7 @@ btnCheckout.addEventListener("click", function () {
   const numeroPedido = gerarNumeroPedido();
 
   let mensagem = `🧾 *Pedido Nº ${numeroPedido}*\n\n`;
+  mensagem += `🍽️ *Restaurante Sabor 67*\n`;
   mensagem += `👤 *Nome:* ${nomeInput.value}\n`;
   mensagem += `🏢 *Setor/Bloco:* ${setorInput.value}\n`;
   mensagem += `⏰ *Horário de Retirada:* ${horarioInput.value}\n\n`;
@@ -214,13 +215,13 @@ btnCheckout.addEventListener("click", function () {
 
   mensagem += `\n💰 *Total:* R$ ${cartTotal.textContent}`;
 
-mensagem += `🍽️ *Restaurante Sabor 67*\n`;
+
   
   const telefone = "5567992777140";
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
   // ✅ FUNCIONA EM TODOS OS NAVEGADORES
-  window.location.href = url;
+  window.location.href = url, "_blank";
 
   // limpar depois do envio
   cart = [];
