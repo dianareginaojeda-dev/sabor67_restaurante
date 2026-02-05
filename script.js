@@ -318,14 +318,22 @@ function verificarHorarioFuncionamento() {
 
 function estaDentroDoHorario() {
   const agora = new Date();
-  const dia = agora.getDay(); // 0 dom | 6 sáb
+  const dia = agora.getDay(); // 0 = domingo | 6 = sábado
+  const hora = agora.getHours();
+  const minutos = agora.getMinutes();
+  const horarioAtual = hora + minutos / 60;
 
-  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
-  const inicio = 11 * 60;       // 11:00
-  const fim = 13 * 60 + 30;     // 13:30
+  const inicio = 11;    // 11:00
+  const fim = 13.5;     // 13:30
 
-  return dia >= 1 && dia <= 5 && minutosAtual >= inicio && minutosAtual <= fim;
+  // Segunda (1) a Sexta (5)
+  if (dia < 1 || dia > 5) {
+    return false;
+  }
+
+  return horarioAtual >= inicio && horarioAtual <= fim;
 }
+
 
 
 /* ===== VALIDAR HORÁRIO DE RETIRADA ===== */
@@ -391,6 +399,31 @@ function verificarHorarioFuncionamento() {
     dateText.textContent = "⛔ Estamos fora do horário de atendimento!";
   }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dateSpan = document.getElementById("date-span");
+  const dateText = document.getElementById("date-text");
+  const closedWarn = document.getElementById("closed-warn");
+
+  if (!estaDentroDoHorario()) {
+    // muda para vermelho
+    dateSpan.classList.remove("bg-green-600");
+    dateSpan.classList.add("bg-red-600");
+
+    dateText.innerText = "⛔ Fora do horário de atendimento";
+
+    // mostra aviso
+    closedWarn.classList.remove("hidden");
+  } else {
+    // garante verde
+    dateSpan.classList.remove("bg-red-600");
+    dateSpan.classList.add("bg-green-600");
+
+    dateText.innerText = "Seg à Sex - 11:00 às 13:30";
+
+    closedWarn.classList.add("hidden");
+  }
+});
 
 
 window.openCustomization = openCustomization;
