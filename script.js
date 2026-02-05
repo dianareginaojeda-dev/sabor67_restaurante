@@ -154,7 +154,8 @@ const horarioWarn = document.getElementById("address-warn-horario");
 btnCheckout.addEventListener("click", function () {
 
    if (!estaDentroDoHorario()) {
-    alert("⛔ Fora do horário de atendimento!");
+    alert("⛔ Fora do horário de atendimento.
+  🕒 Seg à Sex — 11:00 às 13:30 (exceto feriados).");
     return;
   }
 
@@ -310,7 +311,8 @@ function verificarHorarioFuncionamento() {
     // VERMELHO
     dateSpan.classList.remove("bg-green-600");
     dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Fora do horário de pedidos (11:00 às 13:30)";
+    dateText.textContent = "⛔ Fora do horário de atendimento.
+  🕒 Seg à Sex — 11:00 às 13:30 (exceto feriados).";
   }
 }
 
