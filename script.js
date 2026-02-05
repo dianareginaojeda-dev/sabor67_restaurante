@@ -271,6 +271,40 @@ esconderAviso("addresshorario", "address-warn-horario");
 function gerarNumeroPedido() {
   return Math.floor(100000 + Math.random() * 900000);
 }
+function verificarHorarioFuncionamento() {
+  const dateSpan = document.getElementById("date-span");
+  const dateText = document.getElementById("date-text");
+
+  const agora = new Date();
+  const diaSemana = agora.getDay(); // 0=Domingo | 1=Segunda ... 6=Sábado
+
+  const hora = agora.getHours();
+  const minuto = agora.getMinutes();
+  const horarioAtual = hora * 60 + minuto;
+
+  const inicio = 11 * 60;        // 11:00
+  const fim = 13 * 60 + 30;      // 13:30
+
+  const dentroHorario =
+    diaSemana >= 1 && diaSemana <= 5 &&
+    horarioAtual >= inicio &&
+    horarioAtual <= fim;
+
+  if (dentroHorario) {
+    // VERDE
+    dateSpan.classList.remove("bg-red-600");
+    dateSpan.classList.add("bg-green-600");
+    dateText.textContent = "Seg á Sex - 11:00 as 13:30";
+  } else {
+    // VERMELHO
+    dateSpan.classList.remove("bg-green-600");
+    dateSpan.classList.add("bg-red-600");
+    dateText.textContent = "⛔ Fora do horário de pedidos (11:00 às 13:30)";
+  }
+}
+
+// executa ao carregar a página
+verificarHorarioFuncionamento();
 
 
 
