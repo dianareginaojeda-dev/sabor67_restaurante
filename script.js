@@ -425,6 +425,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+document.getElementById("closed-warn").classList.remove("hidden");
+
 
 window.openCustomization = openCustomization;
 
