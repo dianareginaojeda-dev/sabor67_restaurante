@@ -221,7 +221,8 @@ btnCheckout.addEventListener("click", function () {
   const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
 
   // ✅ FUNCIONA EM TODOS OS NAVEGADORES
-  window.location.href = url, "_blank";
+ window.open(url, "_blank");
+
 
   // limpar depois do envio
   cart = [];
