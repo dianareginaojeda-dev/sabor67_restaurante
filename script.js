@@ -190,30 +190,40 @@ btnCheckout.addEventListener("click", function () {
     horarioInput.classList.remove("border-red-500");
   }
 
+  // ⛔ SE NÃO FOR VÁLIDO, PARA AQUI
+  if (!valido) return;
 
-   const numeroPedido = gerarNumeroPedido();
-  
-   // ===== MONTAR MENSAGEM =====
-  let mensagem = `🛒 *Novo Pedido*%0A%0A`;
-  mensagem += `👤 *Nome:* ${nome.value}%0A`;
-  mensagem += `🏢 *Setor/Bloco:* ${setor.value}%0A`;
-  mensagem += `⏰ *Horário de Retirada:* ${horario.value}%0A%0A`;
+  // 🔢 NÚMERO DO PEDIDO
+  const numeroPedido = gerarNumeroPedido();
+
+  // 🧾 MENSAGEM WHATSAPP
+  let mensagem = `🧾 *Pedido Nº ${numeroPedido}*%0A%0A`;
+  mensagem += `👤 *Nome:* ${nomeInput.value}%0A`;
+  mensagem += `🏢 *Setor/Bloco:* ${setorInput.value}%0A`;
+  mensagem += `⏰ *Horário de Retirada:* ${horarioInput.value}%0A%0A`;
 
   mensagem += `🍱 *Itens do Pedido:*%0A`;
 
   cart.forEach(item => {
-    mensagem += `- ${item.name} - R$ ${item.price.toFixed(2)}%0A`;
+    mensagem += `- ${item.name} 🍗 - R$ ${item.price.toFixed(2)}%0A`;
   });
 
   mensagem += `%0A💰 *Total:* R$ ${cartTotal.textContent}`;
 
-  // ===== NUMERO DO WHATSAPP =====
-  const telefone = "5567992777140"; // coloque seu número aqui (DDD + número)
-
+  // 📲 WHATSAPP
+  const telefone = "5567992777140";
   const url = `https://wa.me/${telefone}?text=${mensagem}`;
 
   window.open(url, "_blank");
+
+  // 🧹 LIMPAR APÓS ENVIAR
+  cart = [];
+  updateCartModal();
+  cartModal.classList.add("hidden");
 });
+
+
+
 
 
 
