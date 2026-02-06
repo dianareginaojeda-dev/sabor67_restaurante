@@ -285,34 +285,37 @@ function gerarNumeroPedido() {
 function verificarHorarioFuncionamento() {
   const dateSpan = document.getElementById("date-span");
   const dateText = document.getElementById("date-text");
+  const closedWarn = document.getElementById("closed-warn");
 
   const agora = new Date();
-  const diaSemana = agora.getDay(); // 0=Domingo | 1=Segunda ... 6=Sábado
+  const dia = agora.getDay(); // 0 dom | 6 sáb
+  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
 
-  const hora = agora.getHours();
-  const minuto = agora.getMinutes();
-  const horarioAtual = hora * 60 + minuto;
-
-  const inicio = 11 * 60;        // 11:00
-  const fim = 13 * 60 + 30;      // 13:30
+  const inicio = 11 * 60;       // 11:00
+  const fim = 13 * 60 + 30;     // 13:30
 
   const dentroHorario =
-    diaSemana >= 1 && diaSemana <= 5 &&
-    horarioAtual >= inicio &&
-    horarioAtual <= fim;
+    dia >= 1 && dia <= 5 &&
+    minutosAtual >= inicio &&
+    minutosAtual <= fim;
 
   if (dentroHorario) {
-    // VERDE
+    // 🟢 DENTRO DO HORÁRIO
     dateSpan.classList.remove("bg-red-600");
     dateSpan.classList.add("bg-green-600");
-    dateText.textContent = "Seg á Sex - 11:00 as 13:30";
+    dateText.textContent = "Seg à Sex — 11:00 às 13:30";
+
+    closedWarn.classList.add("hidden");
   } else {
-    // VERMELHO
+    // 🔴 FORA DO HORÁRIO
     dateSpan.classList.remove("bg-green-600");
     dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Estamos fora do horário de atendimento!";
+    dateText.textContent = "⛔ Fora do horário de pedidos";
+
+    closedWarn.classList.remove("hidden");
   }
 }
+
 
 
 
@@ -364,41 +367,9 @@ document.getElementById("addresshorario").addEventListener("input", validarHorar
 
 
 
-/* ===== EXECUTA AO ABRIR A PÁGINA ===== */
-verificarHorarioFuncionamento();
 
 
-function verificarHorarioFuncionamento() {
-  const dateSpan = document.getElementById("date-span");
-  const dateText = document.getElementById("date-text");
 
-  const agora = new Date();
-  const diaSemana = agora.getDay(); // 0=Domingo | 1=Segunda ... 6=Sábado
-
-  const hora = agora.getHours();
-  const minuto = agora.getMinutes();
-  const horarioAtual = hora * 60 + minuto;
-
-  const inicio = 11 * 60;        // 11:00
-  const fim = 13 * 60 + 30;      // 13:30
-
-  const dentroHorario =
-    diaSemana >= 1 && diaSemana <= 5 &&
-    horarioAtual >= inicio &&
-    horarioAtual <= fim;
-
-  if (dentroHorario) {
-    // VERDE
-    dateSpan.classList.remove("bg-red-600");
-    dateSpan.classList.add("bg-green-600");
-    dateText.textContent = "Seg á Sex - 11:00 as 13:30";
-  } else {
-    // VERMELHO
-    dateSpan.classList.remove("bg-green-600");
-    dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Estamos fora do horário de atendimento!";
-  }
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   const dateSpan = document.getElementById("date-span");
@@ -426,6 +397,8 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.getElementById("closed-warn").classList.remove("hidden");
+
+verificarHorarioFuncionamento();
 
 
 window.openCustomization = openCustomization;
