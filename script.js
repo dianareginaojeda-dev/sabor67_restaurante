@@ -319,6 +319,7 @@ function verificarHorarioFuncionamento() {
 
 
 
+
 function estaDentroDoHorario() {
   const agora = new Date();
   const dia = agora.getDay(); // 0 = domingo | 6 = sábado
@@ -399,6 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
 document.getElementById("closed-warn").classList.remove("hidden");
 
 verificarHorarioFuncionamento();
+setInterval(verificarHorarioFuncionamento, 60000); // a cada 1 min
 
 
 window.openCustomization = openCustomization;
