@@ -111,9 +111,12 @@
       <!--Inicio Produto Item--> 
 
             <div class="flex gap-2 w-full" > 
-                <img src="./assets-imagem/kit sorvete.jpg"  
-                alt="Cardapio do dia livre" 
-                class="w-28 h-28 rounded-md hover:scale-110 hover:rotate-2 duration-300"/>  
+                <img 
+  src="./assets-imagem/espoleto.jpeg"  
+  alt="Cardapio do dia livre" 
+  class="w-28 h-28 rounded-md cursor-pointer hover:scale-110 hover:rotate-2 duration-300"
+  onclick="openImage(this)"
+/>  
                 <div> 
                     <p class="font-semibold text-lg mt-2">kit para sorvete</p> 
                     <p class="text-sm">Várias opções para adicionar no seu sorvete</p> 
@@ -124,6 +127,12 @@
             </div> 
 
                  <!--Fim Produto Item--> 
+<!-- Overlay para imagem ampliada -->
+<div id="imageOverlay" class="fixed inset-0 bg-black bg-opacity-70 hidden items-center justify-center z-50">
+  <img id="overlayImage" class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg"/>
+</div>
+
+
     
   <!-- PRODUTO -->
 <div class="flex gap-2 w-full">
@@ -271,6 +280,24 @@
 </div>
 
 <script src="./script.js"></script>
+
+  <script>
+  const overlay = document.getElementById("imageOverlay");
+  const overlayImage = document.getElementById("overlayImage");
+
+  function openImage(img) {
+    overlayImage.src = img.src;
+    overlay.classList.remove("hidden");
+    overlay.classList.add("flex");
+  }
+
+  overlay.addEventListener("click", () => {
+    overlay.classList.add("hidden");
+    overlay.classList.remove("flex");
+  });
+</script>
+
+  
 </body>
 </html>
 
