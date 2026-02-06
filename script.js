@@ -286,33 +286,38 @@ function verificarHorarioFuncionamento() {
   const dateSpan = document.getElementById("date-span");
   const dateText = document.getElementById("date-text");
   const closedWarn = document.getElementById("closed-warn");
+  const checkoutBtn = document.getElementById("checkout-btn");
 
-  const agora = new Date();
-  const dia = agora.getDay(); // 0 dom | 6 sáb
-  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
-
-  const inicio = 11 * 60;       // 11:00
-  const fim = 13 * 60 + 30;     // 13:30
-
-  const dentroHorario =
-    dia >= 1 && dia <= 5 &&
-    minutosAtual >= inicio &&
-    minutosAtual <= fim;
-
-  if (dentroHorario) {
+  if (estaDentroDoHorario()) {
     // 🟢 DENTRO DO HORÁRIO
     dateSpan.classList.remove("bg-red-600");
     dateSpan.classList.add("bg-green-600");
-    dateText.textContent = "Seg à Sex — 11:00 às 13:30";
 
+    dateText.textContent = "Seg à Sex — 11:00 às 13:30";
     closedWarn.classList.add("hidden");
+
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove(
+      "opacity-60",
+      "cursor-not-allowed",
+      "bg-gray-400"
+    );
+    checkoutBtn.classList.add("bg-green-600");
   } else {
     // 🔴 FORA DO HORÁRIO
     dateSpan.classList.remove("bg-green-600");
     dateSpan.classList.add("bg-red-600");
-    dateText.textContent = "⛔ Fora do horário de pedidos";
 
+    dateText.textContent = "⛔ Fora do horário de atendimento";
     closedWarn.classList.remove("hidden");
+
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.remove("bg-green-600");
+    checkoutBtn.classList.add(
+      "opacity-60",
+      "cursor-not-allowed",
+      "bg-gray-400"
+    );
   }
 }
 
@@ -322,20 +327,18 @@ function verificarHorarioFuncionamento() {
 
 function estaDentroDoHorario() {
   const agora = new Date();
-  const dia = agora.getDay(); // 0 = domingo | 6 = sábado
-  const hora = agora.getHours();
-  const minutos = agora.getMinutes();
-  const horarioAtual = hora + minutos / 60;
+  const dia = agora.getDay(); // 0=Dom | 6=Sáb
+  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
 
-  const inicio = 11;    // 11:00
-  const fim = 13.5;     // 13:30
+  const inicio = 11 * 60;       // 11:00
+  const fim = 13 * 60 + 30;     // 13:30
 
-  // Segunda (1) a Sexta (5)
-  if (dia < 1 || dia > 5) {
-    return false;
-  }
-
-  return horarioAtual >= inicio && horarioAtual <= fim;
+  return (
+    dia >= 1 &&
+    dia <= 5 &&
+    minutosAtual >= inicio &&
+    minutosAtual <= fim
+  );
 }
 
 
@@ -397,7 +400,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
-document.getElementById("closed-warn").classList.remove("hidden");
+
 
 verificarHorarioFuncionamento();
 setInterval(verificarHorarioFuncionamento, 60000); // a cada 1 min
