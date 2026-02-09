@@ -112,6 +112,11 @@ document.getElementById("confirm-custom").onclick = () => {
   const extras = [...extrasBox.querySelectorAll("input:checked")].map(el => el.value);
   const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
   const carne = document.querySelector("input[name='meat']:checked").value;
+
+  if (!carne) {
+    alert("Selecione uma proteína");
+    return;
+  }
   
   cart.push({
     ...currentItem,
