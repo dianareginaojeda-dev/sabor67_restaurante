@@ -49,7 +49,8 @@ const meatList = [
 // ===== ABRIR MODAL =====
 function openCustomization(item) {
   currentItem = {
-    ...item,
+    name: item.name ?? "Marmitex",
+    basePrice: item.basePrice,
     extras: [],
     removidos: [],
     carne: "",
@@ -135,7 +136,7 @@ document.getElementById("confirm-custom").onclick = () => {
 document.getElementById("cancel-custom").onclick = () => modal.classList.add("hidden");
 
 // ===== ABRIR / FECHAR CARRINHO =====
-cartBtn.onclick = () => cartModal.classList.toggle("hidden");
+//cartBtn.onclick = () => cartModal.classList.toggle("hidden");
 
 // ===== ATUALIZAR CARRINHO =====
 function updateCartModal() {
