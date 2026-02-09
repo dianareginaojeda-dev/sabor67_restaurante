@@ -107,6 +107,10 @@ function updateModalTotal() {
 }
 
 // ===== EVENTOS MODAL =====
+
+const RESTAURANTE_ABERTO = false;
+const closedMsg = document.getElementById("closed-msg");
+
 extrasBox.addEventListener("change", updateModalTotal);
 
 document.getElementById("confirm-custom").onclick = () => {
@@ -114,6 +118,13 @@ document.getElementById("confirm-custom").onclick = () => {
   const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
   const carneSelecionada = document.querySelector("input[name='meat']:checked");
 
+  if (!RESTAURANTE_ABERTO) {
+    closedMsg.classList.remove("hidden");
+    return;
+  }
+
+  closedMsg.classList.add("hidden");
+  
   if (!carneSelecionada) {
     alert("Selecione uma proteína");
     return;
