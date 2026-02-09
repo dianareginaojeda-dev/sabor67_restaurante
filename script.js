@@ -25,7 +25,7 @@ const modal = document.getElementById("custom-modal");
 const extrasBox = document.getElementById("extras-box");
 const removeBox = document.getElementById("remove-box");
 const modalTotal = document.getElementById("modal-total");
-const meatBox = document.getElementById("meat-box");
+const meatBox = document.getElementById("meatBox");
 
 
 // ===== CONFIG =====
@@ -111,18 +111,18 @@ extrasBox.addEventListener("change", updateModalTotal);
 document.getElementById("confirm-custom").onclick = () => {
   const extras = [...extrasBox.querySelectorAll("input:checked")].map(el => el.value);
   const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
-  const carne = document.querySelector("input[name='meat']:checked").value;
+  const carneSelecionada = document.querySelector("input[name='meat']:checked");
 
-  if (!carne) {
+  if (!carneSelecionada) {
     alert("Selecione uma proteína");
     return;
   }
-  
+
   cart.push({
     ...currentItem,
     extras,
     removidos,
-    carnes,
+    carne: carneSelecionada.value,
     obs: document.getElementById("obs").value,
     price: Number(modalTotal.innerText)
   });
@@ -130,6 +130,7 @@ document.getElementById("confirm-custom").onclick = () => {
   updateCartModal();
   modal.classList.add("hidden");
 };
+
 
 document.getElementById("cancel-custom").onclick = () => modal.classList.add("hidden");
 
