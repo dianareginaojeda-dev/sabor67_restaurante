@@ -1,256 +1,409 @@
-const menu = document.getElementById("menu")
-const cartBtn = document.getElementById("cart-btn")
-const cartModal = document.getElementById("cart-modal")
-const cartItemConteiner = document.getElementById("cart-items")
-const cartTotal = document.getElementById("cart-total")
-const checkoutBtn = document.getElementById("checkout-btn")
-const checAvaliacaoBtn = document.getElementById("checAvaliacao-btn")
-const closeModalBtn = document.getElementById("close-modal-btn")
-const cartCounter = document.getElementById("cart-count")
-const addressInput = document.getElementById("address")
-const addressSetorInput = document.getElementById("addressSetor")
-const addressBlocoInput = document.getElementById("addressbloco")
-const addressHorarioInput = document.getElementById("addresshorario")
-const addresswharn = document.getElementById("address-warn")
-const addresswharnSetor = document.getElementById("address-warn-setor")
-const addresswharnBloco = document.getElementById("address-warn-bloco")
-const addresswharnhorario = document.getElementById("address-warn-horario")
+let currentItem = null;
+// ===== ELEMENTOS =====
+const cartBtn = document.getElementById("cart-btn");
+const cartModal = document.getElementById("cart-modal");
+const cartItemsContainer = document.getElementById("cart-items");
+const cartTotal = document.getElementById("cart-total");
+const cartCount = document.getElementById("cart-count");
+const checkoutBtn = document.getElementById("checkout-btn");
 
-let cart = []
-// abrir menu carrinho
-cartBtn.addEventListener("click", function(){
-    cartModal.style.display = "flex"
-})
-// fechar menu carrinho quando clicar fora 
-cartModal.addEventListener("click", function(event){
-    if(event.target === cartModal){
-        cartModal.style.display = "none"
-    }
-})
-// fechar menu carrinho quando clicar no botão de fechar
-closeModalBtn.addEventListener("click", function(){
-    cartModal.style.display = "none"
-})
-menu.addEventListener("click", function(event){
-    // console.log(event.target)
-    let parentButton = event.target.closest(".add-to-cart-btn")
 
-    if(parentButton){
-    const name = parentButton.getAttribute("data-name")
-    const price = parseFloat(parentButton.getAttribute("data-price"))
+// ===== CARRINHO =====
+let cart = [];
 
-    //adicionar no carrinho
-    addToCart(name, price)
-    }
-    
-})
-//função para adicionar no carrinho
-function addToCart(name, price) {
-  const existingItem = cart.find(
-    item => item.name === name
-  );
+cartItemsContainer.addEventListener("click", function (e) {
+  if (e.target.classList.contains("remove-from-cart-btn")) {
+    const index = e.target.dataset.index;
 
-  if (existingItem) {
-    existingItem.quantity++;
-  } else {
-    cart.push({
-      name,
-      price,
-      quantity: 1,
-    });
+    cart.splice(index, 1);
+    updateCartModal();
   }
+});
 
-  updateCartMotal();
+// ===== MODAL PERSONALIZAÇÃO =====
+const modal = document.getElementById("custom-modal");
+const extrasBox = document.getElementById("extras-box");
+const removeBox = document.getElementById("remove-box");
+const modalTotal = document.getElementById("modal-total");
+
+// ===== CONFIG =====
+const extrasList = [
+  { name: "Ovo", price: 2 },
+  { name: "Bacon", price: 4 },
+  { name: "Queijo", price: 3 }
+];
+
+const removeList = ["Cebola", "Tomate", "Feijão"];
+
+// ===== ABRIR MODAL =====
+function openCustomization(item) {
+  currentItem = {
+    ...item,
+    extras: [],
+    removidos: [],
+    obs: "",
+    price: item.basePrice,
+    quantity: 1
+  };
+
+  extrasBox.innerHTML = "";
+  removeBox.innerHTML = "";
+  document.getElementById("modal-title").innerText = item.name;
+
+  extrasList.forEach(extra => {
+    extrasBox.innerHTML += `
+      <label class="flex gap-2 items-center">
+        <input type="checkbox" data-price="${extra.price}" value="${extra.name}">
+        ${extra.name} (+R$ ${extra.price})
+      </label>`;
+  });
+
+  removeList.forEach(rem => {
+    removeBox.innerHTML += `
+      <label class="flex gap-2 items-center">
+        <input type="checkbox" value="${rem}">
+        ${rem}
+      </label>`;
+  });
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+
+  updateModalTotal();
 }
-// atualizar o modal do carrinho
-function updateCartMotal() {
-  cartItemConteiner.innerHTML = "";
+
+// ===== CALCULAR TOTAL MODAL =====
+function updateModalTotal() {
+  let total = currentItem.basePrice;
+
+  extrasBox.querySelectorAll("input:checked").forEach(el => {
+    total += Number(el.dataset.price);
+  });
+
+  modalTotal.innerText = total.toFixed(2);
+}
+
+// ===== EVENTOS MODAL =====
+extrasBox.addEventListener("change", updateModalTotal);
+
+document.getElementById("confirm-custom").onclick = () => {
+  const extras = [...extrasBox.querySelectorAll("input:checked")].map(el => el.value);
+  const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
+
+  cart.push({
+    ...currentItem,
+    extras,
+    removidos,
+    obs: document.getElementById("obs").value,
+    price: Number(modalTotal.innerText)
+  });
+
+  updateCartModal();
+  modal.classList.add("hidden");
+};
+
+document.getElementById("cancel-custom").onclick = () => modal.classList.add("hidden");
+
+// ===== ABRIR / FECHAR CARRINHO =====
+cartBtn.onclick = () => cartModal.classList.toggle("hidden");
+
+// ===== ATUALIZAR CARRINHO =====
+function updateCartModal() {
+  cartItemsContainer.innerHTML = "";
+
   let total = 0;
-  cart.forEach(item => {
-    const cartItemElement = document.createElement("div");
-    cartItemElement.classList.add("flex", "justify-between", "nm-4", "flex-col")
 
-    cartItemElement.innerHTML = `
-    <div class="flex items-center justify-between">
-    <div>
-        <p class="font-medium">${item.name}</p>
-        <p>Qtd: ${item.quantity}</p>
-        <p class="font-medium mt-2">R$ ${item.price.toFixed(2)}</p>
-    </div>
-
-    
-    <button class="remove-from-cart-btn" data-name="${item.name}">
-    Remover
-    </button>
-    
-    </div>   
-    `
+  cart.forEach((item, index) => {
     total += item.price * item.quantity;
 
-    cartItemConteiner.appendChild(cartItemElement)
+    cartItemsContainer.innerHTML += `
+      <div class="border-b pb-2">
+        <p class="font-bold">${item.name}</p>
+        <p class="text-sm">Extras: ${item.extras.join(", ") || "Nenhum"}</p>
+        <p class="text-sm">Retirar: ${item.removidos.join(", ") || "Nada"}</p>
+        <p class="text-sm">Obs: ${item.obs || "-"}</p>
+        <p class="font-semibold">R$ ${item.price.toFixed(2)}</p>
 
-})
-    cartTotal.textContent = total.toLocaleString("pt-BR", {
-        style: "currency",
-        currency: "BRL"
-    });
+         <button 
+        class="remove-from-cart-btn text-red-600 text-sm mt-1"
+        data-index="${index}">
+        Remover
+      </button>
+    </div>
+      </div>`;
+  
+  });
 
-    cartCounter.innerHTML = cart.length;
+  cartTotal.innerText = total.toFixed(2);
+  cartCount.innerText = cart.length;
 }
 
-//Romover o item do carrinho
-cartItemConteiner.addEventListener("click", function (event){
-    if(event.target.classList.contains("remove-from-cart-btn")){
-        const name = event.target.getAttribute("data-name")
 
-        removeItemCart(name);
+
+//PREENCHER OBRIGATORIO 
+const btnCheckout = document.getElementById("checkout-btn");
+
+const nomeInput = document.getElementById("address");
+const setorInput = document.getElementById("addressSetor");
+const horarioInput = document.getElementById("addresshorario");
+
+const nomeWarn = document.getElementById("address-warn");
+const setorWarn = document.getElementById("address-warn-setor");
+const horarioWarn = document.getElementById("address-warn-horario");
+
+btnCheckout.addEventListener("click", function () {
+
+   if (!estaDentroDoHorario()) {
+    alert("⛔ Fora do horário de atendimento!");
+    return;
+  }
+
+  if (!validarHorarioRetirada()) return;
+
+  let valido = true;
+
+  if (nomeInput.value.trim() === "") {
+    nomeWarn.classList.remove("hidden");
+    valido = false;
+  }
+
+  if (setorInput.value.trim() === "") {
+    setorWarn.classList.remove("hidden");
+    valido = false;
+  }
+
+  if (horarioInput.value.trim() === "") {
+    horarioWarn.classList.remove("hidden");
+    valido = false;
+  }
+
+  if (!valido) return;
+
+  if (cart.length === 0) {
+    alert("Seu carrinho está vazio!");
+    return;
+  }
+
+
+  const numeroPedido = gerarNumeroPedido();
+
+  let mensagem = `🧾 *Pedido Nº ${numeroPedido}*\n\n`;
+  mensagem += `🍽️ *Restaurante Sabor 67*\n`;
+  mensagem += `👤 *Nome:* ${nomeInput.value}\n`;
+  mensagem += `🏢 *Setor/Bloco:* ${setorInput.value}\n`;
+  mensagem += `⏰ *Horário de Retirada:* ${horarioInput.value}\n\n`;
+  mensagem += `🍱 *Itens do Pedido:*\n`;
+
+  cart.forEach(item => {
+  mensagem += `🍱 *${item.name}* - R$ ${item.price.toFixed(2)}\n`;
+
+  if (item.extras.length > 0) {
+    mensagem += `   ➕ Adicionais: ${item.extras.join(", ")}\n`;
+  }
+
+  if (item.removidos.length > 0) {
+    mensagem += `   ➖ Retirar: ${item.removidos.join(", ")}\n`;
+  }
+
+  if (item.obs && item.obs.trim() !== "") {
+    mensagem += `   📝 Obs: ${item.obs}\n`;
+  }
+
+  mensagem += `\n`;
+});
+
+
+  mensagem += `\n💰 *Total:* R$ ${cartTotal.textContent}`;
+
+
+  
+  const telefone = "5567992777140";
+  const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+
+  // ✅ FUNCIONA EM TODOS OS NAVEGADORES
+window.open(url, "_blank");
+
+  // ✅ ALERTA DE CONFIRMAÇÃO
+alert("✅ Pedido enviado com sucesso!");
+
+// ===== LIMPAR FORMULÁRIO =====
+nomeInput.value = "";
+setorInput.value = "";
+horarioInput.value = "";
+
+nomeWarn.classList.add("hidden");
+setorWarn.classList.add("hidden");
+horarioWarn.classList.add("hidden");
+  
+  // limpar depois do envio
+  cart = [];
+  updateCartModal();
+  cartModal.classList.add("hidden");
+});
+
+
+
+
+
+
+cartBtn.addEventListener("click", () => {
+  cartModal.classList.remove("hidden");
+  cartModal.classList.add("flex");
+});
+
+// PARA FECHAR CLICANDO FORA
+cartModal.addEventListener("click", (e) => {
+  if (e.target === cartModal) {
+    cartModal.classList.add("hidden");
+    cartModal.classList.remove("flex");
+  }
+});
+
+
+
+function esconderAviso(inputId, warnId) {
+  const input = document.getElementById(inputId);
+  const warn = document.getElementById(warnId);
+
+  input.addEventListener("input", () => {
+    if (input.value.trim() !== "") {
+      warn.classList.add("hidden");
+      input.classList.remove("border-red-500");
     }
-})
-function removeItemCart(name){
-    const index = cart.findIndex(item => item.name === name);
-    if(index !== -1){
-        const item = cart[index];
-
-     if(item.quantity > 1){
-        item.quantity -= 1;
-        updateCartMotal();
-        return;
-    }
-      cart.splice(index, 1);
-       updateCartMotal();
-    }}
-// NOME
-addressInput.addEventListener("input", function(event){
-    let inputValue = event.target.value;
-
-    if(inputValue !== ""){
-        addressInput.classList.remove("border-red-500")
-        addresswharn.classList.add("hidden")
-    }
-})
-
-// SETOR
-addressSetorInput.addEventListener("input", function(event){
-    let inputValue = event.target.value;
-
-    if(inputValue !== ""){
-        addressSetorInput.classList.remove("border-red-500")
-        addresswharnSetor.classList.add("hidden")
-    }
-})
-    
-// BLOCO
-addressBlocoInput.addEventListener("input", function(event){
-    let inputValue = event.target.value;
-
-    if(inputValue !== ""){
-        addressBlocoInput.classList.remove("border-red-500")
-        addresswharnBloco.classList.add("hidden")
-    }
-})
-// HORARIO
-addressHorarioInput.addEventListener("input", function(event){
-    let inputValue = event.target.value;
-
-    if(inputValue !== ""){
-        addressHorarioInput.classList.remove("border-red-500")
-        addresswharnhorario.classList.add("hidden")
-    }
-})
-
-function gerarNumeroPedido() {
-  return Math.floor(100000 + Math.random() * 900000);
-}
-
-function formatarDataHora() {
-  const agora = new Date();
-  return agora.toLocaleString("pt-BR", {
-    timeZone: "America/Campo_Grande",
-    dateStyle: "short",
-    timeStyle: "short"
   });
 }
 
-function checkRestaurantOpen() {
-  const agora = new Date();
-  const hora = Number(agora.toLocaleString("pt-BR", {
-    timeZone: "America/Campo_Grande",
-    hour: "2-digit",
-    hour12: false
-  }));
+// aplicar para cada campo
+esconderAviso("address", "address-warn");
+esconderAviso("addressSetor", "address-warn-setor");
+esconderAviso("addresshorario", "address-warn-horario");
 
-  return hora >= 8 && hora < 16;
+//numero do pedido
+function gerarNumeroPedido() {
+  return Math.floor(100000 + Math.random() * 900000);
+}
+function verificarHorarioFuncionamento() {
+  const dateSpan = document.getElementById("date-span");
+  const dateText = document.getElementById("date-text");
+  const closedWarn = document.getElementById("closed-warn");
+  const checkoutBtn = document.getElementById("checkout-btn");
+
+  if (estaDentroDoHorario()) {
+    // 🟢 DENTRO DO HORÁRIO
+    dateSpan.classList.remove("bg-red-600");
+    dateSpan.classList.add("bg-green-600");
+
+    dateText.textContent = "Seg à Sex — 11:00 às 13:30";
+    closedWarn.classList.add("hidden");
+
+    checkoutBtn.disabled = false;
+    checkoutBtn.classList.remove(
+      "opacity-60",
+      "cursor-not-allowed",
+      "bg-gray-400"
+    );
+    checkoutBtn.classList.add("bg-green-600");
+  } else {
+    // 🔴 FORA DO HORÁRIO
+    dateSpan.classList.remove("bg-green-600");
+    dateSpan.classList.add("bg-red-600");
+
+    dateText.textContent = "⛔ Fora do horário de atendimento";
+    closedWarn.classList.remove("hidden");
+
+    checkoutBtn.disabled = true;
+    checkoutBtn.classList.remove("bg-green-600");
+    checkoutBtn.classList.add(
+      "opacity-60",
+      "cursor-not-allowed",
+      "bg-gray-400"
+    );
+  }
 }
 
-checkoutBtn.addEventListener("click", function () {
 
-  if (!checkRestaurantOpen()) {
-    Toastify({
-      text: "🔴 Restaurante fechado! Atendimento das 08:00 às 16:00.",
-      duration: 3000,
-      gravity: "top",
-      position: "right",
-      style: { background: "#ef4444" }
-    }).showToast();
-    return;
+
+
+
+function estaDentroDoHorario() {
+  const agora = new Date();
+  const dia = agora.getDay(); // 0=Dom | 6=Sáb
+  const minutosAtual = agora.getHours() * 60 + agora.getMinutes();
+
+  const inicio = 11 * 60;       // 11:00
+  const fim = 13 * 60 + 30;     // 13:30
+
+  return (
+    dia >= 1 &&
+    dia <= 5 &&
+    minutosAtual >= inicio &&
+    minutosAtual <= fim
+  );
+}
+
+
+
+/* ===== VALIDAR HORÁRIO DE RETIRADA ===== */
+function validarHorarioRetirada() {
+  const input = document.getElementById("addresshorario");
+  const warn = document.getElementById("address-warn-horario");
+
+  if (!input.value) return false;
+
+  const [h, m] = input.value.split(":").map(Number);
+  const minutos = h * 60 + m;
+
+  const inicio = 11 * 60;
+  const fim = 13 * 60 + 30;
+
+  if (minutos < inicio || minutos > fim) {
+    warn.textContent = "Horário inválido (11:00 às 13:30)";
+    warn.classList.remove("hidden");
+    return false;
   }
 
-  if (cart.length === 0) return;
+  warn.classList.add("hidden");
+  return true;
+}
 
-  if (addressInput.value === "") {
-    addresswharn.classList.remove("hidden");
-    addressInput.classList.add("border-red-500");
-    return;
+/* ===== EVENTOS ===== */
+document.getElementById("addresshorario").addEventListener("input", validarHorarioRetirada);
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dateSpan = document.getElementById("date-span");
+  const dateText = document.getElementById("date-text");
+  const closedWarn = document.getElementById("closed-warn");
+
+  if (!estaDentroDoHorario()) {
+    // muda para vermelho
+    dateSpan.classList.remove("bg-green-600");
+    dateSpan.classList.add("bg-red-600");
+
+    dateText.innerText = "⛔ Fora do horário de atendimento";
+
+    // mostra aviso
+    closedWarn.classList.remove("hidden");
+  } else {
+    // garante verde
+    dateSpan.classList.remove("bg-red-600");
+    dateSpan.classList.add("bg-green-600");
+
+    dateText.innerText = "Seg à Sex - 11:00 às 13:30";
+
+    closedWarn.classList.add("hidden");
   }
-
-  if (addressSetorInput.value === "") {
-    addresswharnSetor.classList.remove("hidden");
-    addressSetorInput.classList.add("border-red-500");
-    return;
-  }
-
-  if (addressBlocoInput.value === "") {
-    addresswharnBloco.classList.remove("hidden");
-    addressBlocoInput.classList.add("border-red-500");
-    return;
-  }
-
-  if (addressHorarioInput.value === "") {
-    addresswharnhorario.classList.remove("hidden");
-    addressHorarioInput.classList.add("border-red-500");
-    return;
-  }
-
-  const numeroPedido = gerarNumeroPedido();
-  const dataHora = formatarDataHora();
-
-  const cartItems = cart.map((item) => {
-    return `• ${item.name} (Qtd: ${item.quantity}) - R$ ${item.price.toFixed(2)}`;
-  }).join("\n");
-
-  const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
-
-  const texto =
-`🧾 *Pedido Nº ${numeroPedido}*
-📅 ${dataHora}
-
-🛒 *Itens*
-${cartItems}
-
-💰 *Total: R$ ${total}*
-
-👤 *Solicitante:* ${addressInput.value}
-🏢 *Setor:* ${addressSetorInput.value}
-🏬 *Bloco:* ${addressBlocoInput.value}
-⏰ *Horário de Retirada:* ${addressHorarioInput.value}
-
-🍽️ Restaurante Sabor 67`;
-
-  const phone = "67992777140";
-  const mensagem = encodeURIComponent(texto);
-
-  window.open(`https://wa.me/${phone}?text=${mensagem}`, "_blank");
-
-  cart = [];
-  updateCartModal();
 });
+
+
+
+verificarHorarioFuncionamento();
+setInterval(verificarHorarioFuncionamento, 60000); // a cada 1 min
+
+
+window.openCustomization = openCustomization;
