@@ -25,6 +25,8 @@ const modal = document.getElementById("custom-modal");
 const extrasBox = document.getElementById("extras-box");
 const removeBox = document.getElementById("remove-box");
 const modalTotal = document.getElementById("modal-total");
+const meatBox = document.getElementById("meat-box");
+
 
 // ===== CONFIG =====
 const extrasList = [
@@ -35,12 +37,22 @@ const extrasList = [
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
 
+const meatList = [
+  "Carne assada",
+  "Carne ao molho",
+  "Frango assado",
+  "Frango ao molho",
+  "Peixe frito",
+  "Strogonoff"
+];
+
 // ===== ABRIR MODAL =====
 function openCustomization(item) {
   currentItem = {
     ...item,
     extras: [],
     removidos: [],
+    carne: "",
     obs: "",
     price: item.basePrice,
     quantity: 1
@@ -48,6 +60,8 @@ function openCustomization(item) {
 
   extrasBox.innerHTML = "";
   removeBox.innerHTML = "";
+  meatBox.innerHTML = "";
+
   document.getElementById("modal-title").innerText = item.name;
 
   extrasList.forEach(extra => {
@@ -57,6 +71,14 @@ function openCustomization(item) {
         ${extra.name} (+R$ ${extra.price})
       </label>`;
   });
+meatList.forEach((meat, index) => {
+  meatBox.innerHTML += `
+    <label class="flex gap-2 items-center">
+      <input type="radio" name="meat" value="${meat}" ${index === 0 ? "checked" : ""}>
+      ${meat}
+    </label>
+  `;
+});
 
   removeList.forEach(rem => {
     removeBox.innerHTML += `
@@ -89,11 +111,13 @@ extrasBox.addEventListener("change", updateModalTotal);
 document.getElementById("confirm-custom").onclick = () => {
   const extras = [...extrasBox.querySelectorAll("input:checked")].map(el => el.value);
   const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
-
+  const carne = document.querySelector("input[name='meat']:checked").value;
+  
   cart.push({
     ...currentItem,
     extras,
     removidos,
+    carnes,
     obs: document.getElementById("obs").value,
     price: Number(modalTotal.innerText)
   });
@@ -119,6 +143,7 @@ function updateCartModal() {
     cartItemsContainer.innerHTML += `
       <div class="border-b pb-2">
         <p class="font-bold">${item.name}</p>
+        <p class="text-sm">🍖 Carne: ${item.carne}</p>
         <p class="text-sm">Extras: ${item.extras.join(", ") || "Nenhum"}</p>
         <p class="text-sm">Retirar: ${item.removidos.join(", ") || "Nada"}</p>
         <p class="text-sm">Obs: ${item.obs || "-"}</p>
@@ -196,6 +221,7 @@ btnCheckout.addEventListener("click", function () {
 
   cart.forEach(item => {
   mensagem += `🍱 *${item.name}* - R$ ${item.price.toFixed(2)}\n`;
+  mensagem += `   🍖 Carne: ${item.carne}\n`;
 
   if (item.extras.length > 0) {
     mensagem += `   ➕ Adicionais: ${item.extras.join(", ")}\n`;
