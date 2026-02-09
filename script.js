@@ -32,7 +32,7 @@ const meatBox = document.getElementById("meatBox");
 const extrasList = [
   { name: "Ovo", price: 2 },
   { name: "Coca-cola lata", price: 6 },
-  { name: "sobrimesa", price: 5 }
+  { name: "sobremesa", price: 5 }
 ];
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
