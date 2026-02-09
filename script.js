@@ -30,9 +30,10 @@ const meatBox = document.getElementById("meatBox");
 
 // ===== CONFIG =====
 const extrasList = [
-  { name: "Ovo", price: 2 },
+  { name: "Ovo Frito", price: 2 },
   { name: "Coca-cola lata", price: 6 },
-  { name: "sobremesa", price: 5 }
+  { name: "Guarana lata", price: 6 },
+  { name: "Sobremesa", price: 5 }
 ];
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
@@ -43,7 +44,8 @@ const meatList = [
   "Frango assado",
   "Frango ao molho",
   "Peixe frito",
-  "Strogonoff"
+  "Strogonoff",
+  "Legumes"
 ];
 
 // ===== ABRIR MODAL =====
