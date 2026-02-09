@@ -31,8 +31,8 @@ const meatBox = document.getElementById("meatBox");
 // ===== CONFIG =====
 const extrasList = [
   { name: "Ovo", price: 2 },
-  { name: "Bacon", price: 4 },
-  { name: "Queijo", price: 3 }
+  { name: "Coca-cola lata", price: 6 },
+  { name: "sobrimesa", price: 5 }
 ];
 
 const removeList = ["Cebola", "Tomate", "Feijão"];
@@ -53,7 +53,7 @@ function openCustomization(item) {
     basePrice: item.basePrice,
     extras: [],
     removidos: [],
-    carne: "",
+    Proteina: "",
     obs: "",
     price: item.basePrice,
     quantity: 1
@@ -123,7 +123,7 @@ document.getElementById("confirm-custom").onclick = () => {
     ...currentItem,
     extras,
     removidos,
-    carne: carneSelecionada.value,
+    Proteina: carneSelecionada.value,
     obs: document.getElementById("obs").value,
     price: Number(modalTotal.innerText)
   });
@@ -150,7 +150,7 @@ function updateCartModal() {
     cartItemsContainer.innerHTML += `
       <div class="border-b pb-2">
         <p class="font-bold">${item.name}</p>
-        <p class="text-sm">🍖 Carne: ${item.carne}</p>
+        <p class="text-sm">🍖 Proteina: ${item.Proteina}</p>
         <p class="text-sm">Extras: ${item.extras.join(", ") || "Nenhum"}</p>
         <p class="text-sm">Retirar: ${item.removidos.join(", ") || "Nada"}</p>
         <p class="text-sm">Obs: ${item.obs || "-"}</p>
@@ -228,7 +228,7 @@ btnCheckout.addEventListener("click", function () {
 
   cart.forEach(item => {
   mensagem += `🍱 *${item.name}* - R$ ${item.price.toFixed(2)}\n`;
-  mensagem += `   🍖 Carne: ${item.carne}\n`;
+  mensagem += `   🍖 Proteina: ${item.Proteina}\n`;
 
   if (item.extras.length > 0) {
     mensagem += `   ➕ Adicionais: ${item.extras.join(", ")}\n`;
