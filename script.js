@@ -40,9 +40,10 @@ const removeList = ["Cebola", "Tomate", "Feijão"];
 
 const meatList = [
   "Carne assada",
-  "Carne ao molho",
+  "Carne de panela",
   "Frango assado",
   "Frango ao molho",
+  "Filé de frango empanado",
   "Peixe frito",
   "Strogonoff",
   "Legumes"
