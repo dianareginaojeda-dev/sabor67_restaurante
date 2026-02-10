@@ -121,10 +121,10 @@ document.getElementById("confirm-custom").onclick = () => {
   const removidos = [...removeBox.querySelectorAll("input:checked")].map(el => el.value);
   const carneSelecionada = document.querySelector("input[name='meat']:checked");
 
-  if (!RESTAURANTE_ABERTO) {
-    closedMsg.classList.remove("hidden");
-    return;
-  }
+ // if (!RESTAURANTE_ABERTO) {
+  //  closedMsg.classList.remove("hidden");
+ //   return;
+//  }
 
   closedMsg.classList.add("hidden");
   
@@ -199,10 +199,10 @@ const horarioWarn = document.getElementById("address-warn-horario");
 
 btnCheckout.addEventListener("click", function () {
 
-//   if (!estaDentroDoHorario()) {
- //   alert("⛔ Fora do horário de atendimento!");
- //   return;
-//  }
+  if (!estaDentroDoHorario()) {
+   alert("⛔ Fora do horário de atendimento!");
+    return;
+ }
 
   if (!validarHorarioRetirada()) return;
 
