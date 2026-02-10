@@ -451,6 +451,69 @@ document.addEventListener("DOMContentLoaded", () => {
 verificarHorarioFuncionamento();
 setInterval(verificarHorarioFuncionamento, 60000); // a cada 1 min
 
+// CONECTAR SHARE POINT
+const siteUrl = "https://energisa.sharepoint.com/sites/Gestao_Tecnica_vistoria";
+
+async function carregarCardapio() {
+  const response = await fetch(
+    `${siteUrl}/_api/web/lists/getbytitle('Cardapio_Sabor67')/items` +
+    `?$select=Id,Categoria,NomePrato,Preco,ImagemURL,Ativo,Data`,
+    {
+      headers: {
+        "Accept": "application/json;odata=verbose"
+      }
+    }
+  );
+
+  const data = await response.json();
+  return data.d.results;
+}
+/// USAR CATEGORIA COMO NOME
+async function renderCardapio() {
+  const cardapio = await carregarCardapio();
+  const container = document.getElementById("cardapio");
+
+  container.innerHTML = "";
+
+  cardapio
+    .filter(item => item.Ativo === true)
+    .forEach(item => {
+      container.innerHTML += `
+        <div class="p-4 bg-white rounded-lg shadow">
+          
+          ${item.ImagemURL ? `
+            <img 
+              src="${item.ImagemURL.Url}" 
+              class="w-full h-32 object-cover rounded"
+            >
+          ` : ""}
+
+          <h3 class="font-bold text-lg mt-2">
+            ${item.Categoria}
+          </h3>
+
+          <p class="text-sm text-gray-600">
+            ${item.NomePrato || ""}
+          </p>
+
+          <p class="font-semibold mt-2">
+            R$ ${Number(item.Preco).toFixed(2)}
+          </p>
+
+          <button 
+            onclick="abrirModal(${item.Id})"
+            class="mt-2 bg-green-600 text-white px-3 py-1 rounded"
+          >
+            Personalizar
+          </button>
+        </div>
+      `;
+    });
+}
+
+renderCardapio();
+
+
 
 window.openCustomization = openCustomization;
 
