@@ -111,8 +111,7 @@ function updateModalTotal() {
 
 // ===== EVENTOS MODAL =====
 
-const RESTAURANTE_ABERTO = false;
-const closedMsg = document.getElementById("closed-msg");
+
 
 extrasBox.addEventListener("change", updateModalTotal);
 
@@ -126,7 +125,7 @@ document.getElementById("confirm-custom").onclick = () => {
  //   return;
 //  }
 
-  closedMsg.classList.add("hidden");
+ // closedMsg.classList.add("hidden");
   
   if (!carneSelecionada) {
     alert("Selecione uma proteína");
