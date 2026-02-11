@@ -552,6 +552,20 @@ async function carregarCardapio() {
   return data.d.results;
 }
 
+function openImage(img) {
+  const overlay = document.getElementById("imageOverlay");
+  const overlayImage = document.getElementById("overlayImage");
+
+  overlayImage.src = img.src;
+  overlay.classList.remove("hidden");
+  overlay.classList.add("flex");
+}
+
+document.getElementById("imageOverlay").addEventListener("click", function() {
+  this.classList.add("hidden");
+  this.classList.remove("flex");
+});
+
 
 
 
