@@ -478,50 +478,80 @@ async function renderCardapio() {
   cardapio
     .filter(item => item.Ativo === true)
     .forEach(item => {
+
+      const imagem = (item.ImagemURL && item.ImagemURL.Url)
+        ? item.ImagemURL.Url
+        : "./assets-imagem/sem-imagem.jpg";
+
       container.innerHTML += `
-        <div class="p-4 bg-white rounded-lg shadow">
-          
-          ${item.ImagemURL ? `
-            <img 
-  src="${item.ImagemURL && item.ImagemURL.Url 
-    ? item.ImagemURL.Url 
-    : './assets-imagem/sem-imagem.jpg'}"
-  class="w-full h-32 object-cover rounded"
->
+        <div class="flex gap-3 bg-white p-4 rounded-lg shadow">
 
-          ` : ""}
-
-          <h3 class="font-bold text-lg mt-2">
-            ${item.Categoria}
-          </h3>
-
-          <p class="text-sm text-gray-600">
-            ${item.NomePrato || ""}
-          </p>
-           <p class="text-sm text-gray-600">
-            ${item.Salada || ""}
-          </p>
-
-           <p class="text-sm text-gray-600">
-            ${item.Sobremesa || ""}
-          </p>
-          
-          <p class="font-semibold mt-2">
-            R$ ${Number(item.Preco).toFixed(2)}
-          </p>
-
-          <button 
-            onclick="abrirModal(${item.Id})"
-            class="mt-2 bg-green-600 text-white px-3 py-1 rounded"
+          <img 
+            src="${imagem}"
+            class="w-28 h-28 rounded-md object-cover cursor-pointer hover:scale-105 duration-300"
+            onclick="openImage(this)"
           >
-            Personalizar
-          </button>
+
+          <div class="flex-1">
+
+            <p class="text-xs bg-green-600 text-white px-3 py-1 rounded inline-block">
+              ${item.dia || ""}
+            </p>
+
+            <h3 class="font-bold text-lg mt-2">
+              ${item.Categoria || ""}
+            </h3>
+
+            <p class="text-sm whitespace-pre-line">
+              ${item.NomePrato || ""}
+            </p>
+
+            ${item.Salada ? `
+              <p class="text-sm">
+                ${item.Salada}
+              </p>
+            ` : ""}
+
+            ${item.Sobremesa ? `
+              <p class="text-sm">
+                ${item.Sobremesa}
+              </p>
+            ` : ""}
+
+            <div class="flex justify-between items-center mt-3">
+              <span class="font-bold text-lg">
+                R$ ${Number(item.Preco).toFixed(2)}
+              </span>
+
+              <button 
+                onclick="abrirModal(${item.Id})"
+                class="bg-gray-900 px-3 py-1 rounded text-white"
+              >
+                <i class="fa fa-cart-plus"></i>
+              </button>
+            </div>
+
+          </div>
         </div>
       `;
     });
 }
 
 renderCardapio();
+
+async function carregarCardapio() {
+  const response = await fetch(
+    `${siteUrl}/_api/web/lists/getbytitle('Cardapio_Sabor67')/items` +
+    `?$select=Id,dia,Categoria,NomePrato,Salada,Sobremesa,Preco,ImagemURL,Ativo,Data`,
+    {
+      headers: { "Accept": "application/json;odata=verbose" }
+    }
+  );
+
+  const data = await response.json();
+  return data.d.results;
+}
+
 
 
 
