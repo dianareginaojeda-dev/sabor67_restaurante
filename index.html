@@ -27,6 +27,16 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <title>Espaço de convivência - Restaurante Sabor 67 - Sede MS</title>
 </head>
+
+  <!-- OVERLAY ZOOM IMAGEM -->
+<div id="imageOverlay"
+     class="fixed inset-0 bg-black/80 hidden items-center justify-center z-50">
+
+  <img id="overlayImage"
+       class="max-w-[90%] max-h-[90%] rounded-lg shadow-lg cursor-pointer">
+</div>
+
+  
 <body class="bg-gray-100 bg-[#e9f7e9]">
   <!-- Início do cabeçalho --> 
 
@@ -260,20 +270,24 @@
 
 <script src="./script.js"></script>
 
-  <script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
   const overlay = document.getElementById("imageOverlay");
   const overlayImage = document.getElementById("overlayImage");
 
-  function openImage(img) {
+  window.openImage = function (img) {
     overlayImage.src = img.src;
     overlay.classList.remove("hidden");
     overlay.classList.add("flex");
-  }
+  };
 
-  overlay.addEventListener("click", () => {
+  overlay.addEventListener("click", function () {
     overlay.classList.add("hidden");
     overlay.classList.remove("flex");
   });
+
+});
 </script>
 
   
