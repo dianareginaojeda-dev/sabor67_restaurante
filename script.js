@@ -457,7 +457,7 @@ const siteUrl = "https://energisa.sharepoint.com/sites/Gestao_Tecnica_vistoria";
 async function carregarCardapio() {
   const response = await fetch(
     `${siteUrl}/_api/web/lists/getbytitle('Cardapio_Sabor67')/items` +
-    `?$select=Id,Categoria,NomePrato,Preco,ImagemURL,Ativo,Data`,
+    `?$select=Id,dia,Categoria,NomePrato,Salada,Sobremesa,Preco,ImagemURL,Ativo`,
     {
       headers: {
         "Accept": "application/json;odata=verbose"
@@ -483,9 +483,12 @@ async function renderCardapio() {
           
           ${item.ImagemURL ? `
             <img 
-              src="${item.ImagemURL.Url}" 
-              class="w-full h-32 object-cover rounded"
-            >
+  src="${item.ImagemURL && item.ImagemURL.Url 
+    ? item.ImagemURL.Url 
+    : './assets-imagem/sem-imagem.jpg'}"
+  class="w-full h-32 object-cover rounded"
+>
+
           ` : ""}
 
           <h3 class="font-bold text-lg mt-2">
@@ -495,7 +498,14 @@ async function renderCardapio() {
           <p class="text-sm text-gray-600">
             ${item.NomePrato || ""}
           </p>
+           <p class="text-sm text-gray-600">
+            ${item.Salada || ""}
+          </p>
 
+           <p class="text-sm text-gray-600">
+            ${item.Sobremesa || ""}
+          </p>
+          
           <p class="font-semibold mt-2">
             R$ ${Number(item.Preco).toFixed(2)}
           </p>
